@@ -2,100 +2,35 @@
 <meta charset="utf-8">
 <title>Mensaplan – eingebettete Karte</title>
 
-<link  href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.1/maptiler-sdk.css" rel="stylesheet">
+<link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.1/maptiler-sdk.css" rel="stylesheet">
 <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.1/maptiler-sdk.umd.min.js"></script>
 
-<style>
-    /* Seite braucht kein 100-%-Layout mehr */
-    body{
-        font-family:sans-serif;
-        margin:20px;
-    }
-
-    /* ❶  Fenster-Rahmen */
-    .map-frame{
-        height:550px;         /* gewünschte Fenster­höhe     */
-        border:2px solid #0066bd;
-        border-radius:12px;
-        overflow:hidden;      /* alles sauber abschneiden   */
-        box-shadow:0 4px 12px rgba(0,0,0,.15);
-        position:relative;    /* für #map absolut innerhalb */
-    }
-
-    /* ❷  Karte füllt das Fenster komplett aus */
-    #map{
-        position:absolute;    /* an .map-frame angedockt    */
-        inset:0;              /* top/right/bottom/left = 0  */
-    }
-
-    /* Pop‑up Inhalt feintunen ------------------------------------------*/
-    .maplibregl-popup-content h4{
-
-        margin:1px 0 1px;        /* weniger Abstand oben/unten */
-        line-height:1;
-    }
-
-    .maplibregl-popup-content .qr{
-        display:block;            /* zentriert über margin:auto */
-        margin:4px auto 6px;      /* oberer & unterer Abstand   */
-        width:100px;              /* gleichmäßige Größe         */
-    }
-
-    /* Tip-Größe je nach Anker -------------------------------------------*/
-    .maplibregl-popup-anchor-top   .maplibregl-popup-tip,
-    .maplibregl-popup-anchor-bottom .maplibregl-popup-tip{
-        width:1px;
-        height:5px;
-    }
-
-    .maplibregl-popup-anchor-left  .maplibregl-popup-tip,
-    .maplibregl-popup-anchor-right .maplibregl-popup-tip{
-        width:5px;
-        height:1px;
-    }
-
-    /* Radius dort, wo der Pfeil sitzt reduzieren ------------------------*/
-    .maplibregl-popup-anchor-left  .maplibregl-popup-content{
-        border-radius:10px 10px 10px 10px;   /* linke Ecken enger */
-    }
-    .maplibregl-popup-anchor-right .maplibregl-popup-content{
-        border-radius:10px 10px 10px 10px;   /* rechte Ecken enger */
-    }
-    .maplibregl-popup-anchor-top  .maplibregl-popup-content{
-        border-radius:10px 10px 10px 10px;   /* linke Ecken enger */
-    }
-    .maplibregl-popup-anchor-bottom .maplibregl-popup-content{
-        border-radius:10px 10px 10px 10px;   /* rechte Ecken enger */
-    }
-    /* top/bottom behalten volle Rundung */
-    .qr{width:40px;height:auto}
-</style>
+<!-- shared styles -->
+<link rel="stylesheet" href="../styles/style.css">
 
 <h2>Standorte am Campus Garching</h2>
 <p>Die wichtigsten Mensen / Cafés als 3-D-Karte:</p>
 
-<div class="map-frame">
-    <div id="map"></div>
-</div>
+<div class="map-frame"><div id="map"></div></div>
 
 <script>
     /* ------------ unveränderter JS-Block -------------------------------*/
     const KEY='8na9eBlqJgIviIZxv3kB';
-    const STYLE_JSON={/* … dein Building-Layer wie zuvor … */};
+    const STYLE_JSON={/* dein Building-Layer */};
     const CENTER=[11.669879,48.265427];
     const ZOOM=15.6, PITCH=58.8, BEARING=-61;
 
     const POPUPS = [
         [11.667724,48.265774,'<h4>StuCafé Boltzmannstraße</h4>'+
-        '<img class="qr" src="https://lehre.bpm.in.tum.de/~ge49fag/mensa/qrcodes/maschinenbau.png">',     'bottom' , [0,  0]],
+        '<img class="qr" src="../qrcodes/maschinenbau.png">','bottom',[0,0]],
 
-        [11.6670  ,48.2627  ,'<h4>Aktueller Standort</h4>',     'bottom'  , [0, 0]],
+        [11.6670,48.2627,'<h4>Aktueller Standort</h4>','bottom',[0,0]],
 
-        [11.67174 ,48.2681  ,'<h4>StuCafé Garching</h4>'+
-        '<img class="qr" src="https://lehre.bpm.in.tum.de/~ge49fag/mensa/qrcodes/mensabolzmann.png">',     'right', [ 0,  0]],
+        [11.67174,48.2681,'<h4>StuCafé Garching</h4>'+
+        '<img class="qr" src="../qrcodes/mensabolzmann.png">','right',[0,0]],
 
-        [11.67232 ,48.2684  ,'<h4>Mensa Garching</h4>'+
-        '<img class="qr" src="https://lehre.bpm.in.tum.de/~ge49fag/mensa/qrcodes/mensagarching.png">',     'left', [ 0, 0]]
+        [11.67232,48.2684,'<h4>Mensa Garching</h4>'+
+        '<img class="qr" src="../qrcodes/mensagarching.png">','left',[0,0]]
     ];
 
     maptilersdk.config.apiKey=KEY;
@@ -114,20 +49,14 @@
             paint:{'sky-type':'atmosphere','sky-atmosphere-sun-intensity':8}});
 
         map.getStyle().layers.forEach(l=>{
-            if(l.type==='symbol'){map.setLayoutProperty(l.id,'visibility','none');}
+            if(l.type==='symbol') map.setLayoutProperty(l.id,'visibility','none');
         });
 
-        map.once('idle', () => {
-            POPUPS.forEach(([lng, lat, html, anchor, off]) => {
+        map.once('idle',()=>{
+            POPUPS.forEach(([lng,lat,html,anchor,off])=>{
                 new maptilersdk.Popup({
-                    anchor,                     // ← wohin zeigt der Pfeil?
-                    offset : off,         // falls kein Offset gesetzt: 25 px
-                    closeButton:false,
-                    closeOnClick:false
-                })
-                    .setLngLat([lng, lat])
-                    .setHTML(html)
-                    .addTo(map);
+                    anchor,offset:off,closeButton:false,closeOnClick:false
+                }).setLngLat([lng,lat]).setHTML(html).addTo(map);
             });
         });
     });

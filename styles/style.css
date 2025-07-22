@@ -1,0 +1,97 @@
+/* -----------------------------------------------------------
+   Global palette / base styles
+------------------------------------------------------------ */
+:root{
+    --tum-blue:#0066bd;
+    --card-w:340px;
+}
+
+*{box-sizing:border-box}
+
+body{
+    font-family:system-ui,sans-serif;
+    margin:20px;
+    background:#f5f7fa;
+}
+
+/* -----------------------------------------------------------
+   A) Map frame + pop-ups  (map.html)
+------------------------------------------------------------ */
+.map-frame{
+    height:550px;
+    border:2px solid var(--tum-blue);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+    position:relative;
+}
+#map{position:absolute;inset:0}
+
+/* pop-up tweaks */
+.maplibregl-popup-content h4{
+    margin:1px 0;
+    line-height:1;
+}
+.maplibregl-popup-content .qr{
+    display:block;
+    margin:4px auto 6px;
+    width:100px;
+}
+.maplibregl-popup-anchor-top   .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip{width:1px;height:5px}
+.maplibregl-popup-anchor-left  .maplibregl-popup-tip,
+.maplibregl-popup-anchor-right .maplibregl-popup-tip{width:5px;height:1px}
+/* smaller radius where the pointer sits */
+.maplibregl-popup-content{border-radius:10px}
+.qr{width:40px;height:auto}
+
+/* -----------------------------------------------------------
+   B) Card grid (optionally used below the map)
+------------------------------------------------------------ */
+.cards{
+    display:flex;
+    flex-wrap:wrap;
+    gap:1.2rem;
+    margin-top:24px;
+    justify-content:center;
+}
+.card{
+    flex:1 1 260px;
+    background:#fff;
+    border:1.5px solid var(--tum-blue);
+    border-radius:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+    padding:1.2rem 1.4rem;
+}
+.card h3{
+    margin:0 0 .5rem;
+    font-size:1.15rem;
+    color:var(--tum-blue);
+}
+
+/* -----------------------------------------------------------
+   C) Menu cards  (mensagarching.html)
+------------------------------------------------------------ */
+h1{margin:0 0 2rem;text-align:center;color:var(--tum-blue)}
+
+#menu{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:1.3rem;
+}
+.dish{
+    width:var(--card-w);
+    background:#fff;
+    border:1.5px solid var(--tum-blue);
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    padding:1.2rem 1.4rem;
+    display:flex;
+    flex-direction:column;
+    gap:.4rem;
+}
+.dish h3{margin:.1rem 0 .3rem;font-size:1.1rem;font-weight:700}
+.labels{font-size:.85rem;color:#555;white-space:pre-line;margin-left:.25rem}
+.price {margin-top:.3rem;font-weight:600}
+.error {color:#c00;text-align:center;font-size:1.1rem}
