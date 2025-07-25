@@ -1,18 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Mensa Garching Menü</title>
+    <title>Mensa Maschinenbau Menü</title>
     <link rel="stylesheet" href="../styles/style.css">
 </head>
 
 <!-- choose a page-specific background class -->
-<body class="bg-garching">
+<body class="bg-maschinenbau">
 <div class="container">
     <div class="header">
-        <h1 id="title">Mensa Garching Menü</h1>
-        <p>Boltzmannstr. 19, 85748 Garching</p>
+        <h1 id="title">Mensa Maschinenbau Menü</h1>
+        <p> Boltzmannstr. 15, 85748 Garching </p>
     </div>
 
     <div id="menu" class="menu-grid"></div>
@@ -25,8 +25,8 @@
             <span>Mensa Garching</span>
         </div>
         <div class="qr-item">
-            <img src="../qrcodes/map.png" alt="Map page" />
-            <span>Homepage</span>
+            <img src="../qrcodes/mensabolzmann.png" alt="StuCafé Boltzmann QR" />
+            <span>StuCafé Boltzmann</span>
         </div>
         <div class="qr-item">
             <img src="../qrcodes/maschinenbau.png" alt="Mensa Maschinenbau QR" />
@@ -40,7 +40,7 @@
         const $title = document.getElementById('title');
         const $menu  = document.getElementById('menu');
 
-        const url = '../jsonpasser/data/mensa_garching.json';
+        const url = '../jsonpasser/data/mensa_maschinenbau.json';
 
         try {
             const res = await fetch(url);
@@ -54,7 +54,7 @@
             }
 
             const d = new Date(day.date ?? Date.now());
-            $title.textContent = `Mensa Garching Speißeplan für ${d.toLocaleDateString('de-DE')}`;
+            $title.textContent = `Maschinenbau Speißeplan für ${d.toLocaleDateString('de-DE')}`;
 
             if (day.dishes.length > 9) {
                 $menu.classList.add('four-cols');
@@ -111,5 +111,21 @@
         }
     })();
 </script>
+<div class="bottom-bar">
+    <div class="qr-menu">
+        <div class="qr-item">
+            <img src="../qrcodes/mensagarching.png" alt="Mensa Garching QR" />
+            <span>Mensa Garching</span>
+        </div>
+        <div class="qr-item">
+            <img src="../qrcodes/mensabolzmann.png" alt="StuCafé Boltzmann QR" />
+            <span>StuCafé Boltzmann</span>
+        </div>
+        <div class="qr-item">
+            <img src="../qrcodes/maschinenbau.png" alt="Mensa Maschinenbau QR" />
+            <span>Maschinenbau</span>
+        </div>
+    </div>
+</div>
 </body>
 </html>

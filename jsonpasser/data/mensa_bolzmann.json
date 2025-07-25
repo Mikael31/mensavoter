@@ -1,0 +1,80 @@
+{
+  "date": "2025-07-24",
+  "dishes": [
+    {
+      "name": "Hausgemachter Pulled Pork Burger mit krÃ¤ftiger Biersauce",
+      "prices": {
+        "students": {
+          "base_price": 1,
+          "price_per_unit": 0.8,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 1,
+          "price_per_unit": 1,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 1,
+          "price_per_unit": 1.35,
+          "unit": "100g"
+        }
+      },
+      "labels": [
+        "ALCOHOL",
+        "ANTIOXIDANTS",
+        "BARLEY",
+        "CELERY",
+        "CEREAL",
+        "DYESTUFF",
+        "GLUTEN",
+        "MEAT",
+        "MUSTARD",
+        "PORK",
+        "PRESERVATIVES",
+        "SESAME",
+        "SHELL_FRUITS",
+        "SULFITES",
+        "SULPHURS",
+        "SWEETENERS",
+        "WHEAT"
+      ],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "SÃ¼ÃŸkartoffel-Amaranth Burger mit Currydip",
+      "prices": {
+        "students": {
+          "base_price": 0,
+          "price_per_unit": 0.8,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0,
+          "price_per_unit": 1,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0,
+          "price_per_unit": 1.35,
+          "unit": "100g"
+        }
+      },
+      "labels": [
+        "ALCOHOL",
+        "ANTIOXIDANTS",
+        "CEREAL",
+        "GARLIC",
+        "GLUTEN",
+        "MUSTARD",
+        "SESAME",
+        "SHELL_FRUITS",
+        "SOY",
+        "VEGAN",
+        "VEGETARIAN",
+        "WHEAT"
+      ],
+      "dish_type": "Vegan"
+    }
+  ]
+}

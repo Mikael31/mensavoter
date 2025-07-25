@@ -2,6 +2,7 @@
 <meta charset="utf-8">
 <title>Mensaplan – eingebettete Karte</title>
 
+<link rel="stylesheet" href="../styles/style.css">
 <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.1/maptiler-sdk.css" rel="stylesheet">
 <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.1/maptiler-sdk.umd.min.js"></script>
 
@@ -10,6 +11,40 @@
 
 <h2>Standorte am Campus Garching</h2>
 <p>Die wichtigsten Mensen / Cafés als 3-D-Karte:</p>
+
+<style>
+body {
+    background: url('../pictures/TUM-Bild.png') center/cover no-repeat fixed;
+    background-color: #f0f4f9; /* fallback */
+    margin: 0;
+    padding: 20px;
+    font-family: system-ui, sans-serif;
+    color: #222;
+}
+.map-frame {
+  border: none;
+  background: linear-gradient(135deg, #ffffff, #f0f4f9);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.maplibregl-popup-content {
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #2d3748;
+}
+
+.maplibregl-popup-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--tum-blue);
+}
+
+.maplibregl-popup-content .qr {
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+</style>
 
 <div class="map-frame"><div id="map"></div></div>
 

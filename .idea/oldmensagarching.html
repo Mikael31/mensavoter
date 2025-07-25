@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Mensa – Tagesmenü</title>
+
+    <style>
+        :root{ --tum-blue:#0065bd; --card-w:340px; }
+        body{margin:0;font-family:system-ui,sans-serif;background:#f5f7fa;padding:2rem 1rem 4rem;}
+        h1{margin:0 0 2rem;text-align:center;color:var(--tum-blue)}
+        #menu{display:flex;flex-wrap:wrap;justify-content:center;gap:1.3rem}
+        .dish{width:var(--card-w);background:#fff;border:1.5px solid var(--tum-blue);
+            border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+            padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:.4rem}
+        .dish h3{margin:.1rem 0 .3rem;font-size:1.1rem;font-weight:700}
+        .labels{font-size:.85rem;color:#555;white-space:pre-line;margin-left:.25rem}
+        .price{margin-top:.3rem;font-weight:600}
+        .error{color:#c00;text-align:center;font-size:1.1rem}
+    </style>
+</head>
+
+<body>
+<h1 id="title">Menü lädt …</h1>
+<div id="menu"></div>
+
+<script>
+    (() => {
+        const $title = document.getElementById('title');
+        const $menu  = document.getElementById('menu');
+
+        /* 1. param aus der URL holen --------------------------------- */
+
+        const sp   = new URLSearchParams(location.search);
+        let   raw  = sp.get('names');
+
+        if (!raw) {                  // kein Parameter => Fehlermeldung
+            $title.textContent = 'Fehler';
+            $menu.innerHTML    = '<p class="error">Kein <code>?param=</code> gefunden.</p>';
+            return;
+        }
+
+        /* 2. URL-Decodieren & JSON parsen ---------------------------- */
+        try {
+            raw = decodeURIComponent(raw);
+            const data = JSON.parse(raw);     // ✔ jetzt echtes Objekt
+
+            /* 3. Seite befüllen --------------------------------------- */
+            const d = new Date(data.date);
+            $title.textContent = `Speiseplan für ${d.toLocaleDateString('de-DE')}`;
+
+            data.dishes.forEach(dish => {
+                const card = document.createElement('section');
+                card.className = 'dish';
+
+                card.innerHTML =
+                    `<h3>${dish.name}</h3>` +
+                    (dish.labels?.length ? `<p class="labels">${dish.labels.join(', ')}</p>` : '') +
+                    (dish?.prices?.students?.base_price != null
+                        ? `<p class="price">${dish.prices.students.base_price.toFixed(2)} € für Studierende</p>`
+                        : '');
+
+                $menu.appendChild(card);
+            });
+
+        } catch (e) {
+            $title.textContent = 'Fehler';
+            $menu.innerHTML    = `<p class="error">JSON Parse error: ${e.message}</p>`;
+        }
+    })();
+</script>
+</body>
+</html>

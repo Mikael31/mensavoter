@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
 </head>
 
 <!-- choose a page-specific background class -->
-<body class="bg-garching">
+<body class="bg-boltzmann">
 <div class="container">
     <div class="header">
         <h1 id="title">Mensa Garching Menü</h1>
@@ -40,7 +40,7 @@
         const $title = document.getElementById('title');
         const $menu  = document.getElementById('menu');
 
-        const url = '../jsonpasser/data/mensa_garching.json';
+        const url = '../jsonpasser/data/mensa_bolzmann.json';
 
         try {
             const res = await fetch(url);
@@ -54,7 +54,7 @@
             }
 
             const d = new Date(day.date ?? Date.now());
-            $title.textContent = `Mensa Garching Speißeplan für ${d.toLocaleDateString('de-DE')}`;
+            $title.textContent = `Mensa unter der Mensa Speißeplan für ${d.toLocaleDateString('de-DE')}`;
 
             if (day.dishes.length > 9) {
                 $menu.classList.add('four-cols');

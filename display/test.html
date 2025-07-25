@@ -1,18 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Mensa Garching Menü</title>
+    <title>Mensa Menü</title>
     <link rel="stylesheet" href="../styles/style.css">
 </head>
 
 <!-- choose a page-specific background class -->
-<body class="bg-garching">
+<body class="bg-maschinenbau">
 <div class="container">
     <div class="header">
-        <h1 id="title">Mensa Garching Menü</h1>
-        <p>Boltzmannstr. 19, 85748 Garching</p>
+        <h1 id="title">Mensa Menü</h1>
+        <p>Frische und leckere Gerichte für Studierende</p>
     </div>
 
     <div id="menu" class="menu-grid"></div>
@@ -25,8 +25,8 @@
             <span>Mensa Garching</span>
         </div>
         <div class="qr-item">
-            <img src="../qrcodes/map.png" alt="Map page" />
-            <span>Homepage</span>
+            <img src="../qrcodes/mensabolzmann.png" alt="StuCafé Boltzmann QR" />
+            <span>StuCafé Boltzmann</span>
         </div>
         <div class="qr-item">
             <img src="../qrcodes/maschinenbau.png" alt="Mensa Maschinenbau QR" />
@@ -40,7 +40,7 @@
         const $title = document.getElementById('title');
         const $menu  = document.getElementById('menu');
 
-        const url = '../jsonpasser/data/mensa_garching.json';
+        const url = '../jsonpasser/data/mensa_bolzmann.json';
 
         try {
             const res = await fetch(url);
@@ -54,21 +54,38 @@
             }
 
             const d = new Date(day.date ?? Date.now());
-            $title.textContent = `Mensa Garching Speißeplan für ${d.toLocaleDateString('de-DE')}`;
+            $title.textContent = `Maschinenbau Speißeplan für ${d.toLocaleDateString('de-DE')}`;
 
             if (day.dishes.length > 9) {
                 $menu.classList.add('four-cols');
             }
 
-            day.dishes.forEach(dish => {
+            day.dishes.forEach(async dish => {
                 const card = document.createElement('section');
                 card.className = 'dish';
 
-                let html = `<h3>${dish.name}</h3>`;
+                // Fetch image from Unsplash API
+                let imageUrl = '';
+                try {
+                    const imgRes = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(dish.name)}&client_id=-5R8DX22F98Skma-wQtVcd3GeKrLRJeVr8LSFv2Io2o`);
+                    if (imgRes.ok) {
+                        const imgData = await imgRes.json();
+                        if (imgData.results && imgData.results.length > 0) {
+                            imageUrl = imgData.results[0].urls.small;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Image fetch failed for', dish.name, e);
+                }
+
+                let html = '';
+                if (imageUrl) {
+                    html += `<img src="${imageUrl}" alt="${dish.name}" class="dish-img" />`;
+                }
+                html += `<h3>${dish.name}</h3>`;
 
                 if (dish.labels?.length) {
-                    const labelIcons = dish.labels.map(label => `<span class="label-icon label-${label}"></span>`).join(' ');
-                    html += `<p class="labels">${labelIcons}</p>`;
+                    html += `<p class="labels">${dish.labels.join(', ')}</p>`;
                 }
 
                 if (dish?.prices) {
@@ -77,7 +94,7 @@
                         if (priceObj.base_price === 0) {
                             return `<p class="price">${label}: ${priceObj.price_per_unit.toFixed(2)} € / ${priceObj.unit}</p>`;
                         } else {
-                            return `<p class="price">${label}: ${priceObj.base_price.toFixed(2)} € + ${priceObj.price_per_unit.toFixed(2)} € /  ${priceObj.unit}</p>`;
+                            return `<p class="price">${label}: ${priceObj.base_price.toFixed(2)} € + ${priceObj.unit}</p>`;
                         }
                     };
                     html += renderPrice('Studierende', dish.prices.students);
@@ -90,7 +107,7 @@
             });
             // Bidirectional smooth scrolling
             let stepSize = 1; // Pixels per scroll step
-            let speed = 25; // Delay in ms
+            let speed = 20; // Delay in ms
             let direction = 1;
 
             setInterval(() => {
@@ -111,5 +128,21 @@
         }
     })();
 </script>
+<div class="bottom-bar">
+    <div class="qr-menu">
+        <div class="qr-item">
+            <img src="../qrcodes/mensagarching.png" alt="Mensa Garching QR" />
+            <span>Mensa Garching</span>
+        </div>
+        <div class="qr-item">
+            <img src="../qrcodes/mensabolzmann.png" alt="StuCafé Boltzmann QR" />
+            <span>StuCafé Boltzmann</span>
+        </div>
+        <div class="qr-item">
+            <img src="../qrcodes/maschinenbau.png" alt="Mensa Maschinenbau QR" />
+            <span>Maschinenbau</span>
+        </div>
+    </div>
+</div>
 </body>
 </html>

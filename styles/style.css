@@ -2,96 +2,243 @@
    Global palette / base styles
 ------------------------------------------------------------ */
 :root{
-    --tum-blue:#0066bd;
-    --card-w:340px;
+    --tum-blue: #0066bd;
+    --card-w: 340px;
+    --bg-gradient: linear-gradient(135deg, #e4f0ff, #f5f7fa);
+    --bottom-bar-h: 130px;          /* global height of bottom bar */
+    --page-padding: 10px;
+    --overlay-darkness: 0.35;       /* darkness on bg image */
+    --overlay-blur: 3px;
 }
 
-*{box-sizing:border-box}
+*{ box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body{
+    height: 100%;
+    overflow-x: hidden;
+}
 
 body{
-    font-family:system-ui,sans-serif;
-    margin:20px;
-    background:#f5f7fa;
+    font-family: system-ui, sans-serif;
+    background: var(--bg-gradient);
+    color: #222;
+    padding: var(--page-padding);
+    position: relative;
+}
+
+/* ---------- page specific background photos --------------------------- */
+body.bg-maschinenbau::before,
+body.bg-garching::before,
+body.bg-boltzmann::before{
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(var(--overlay-blur));
+}
+
+/* set the specific photo per page */
+body.bg-maschinenbau::before{
+    background-image: url('../pictures/mensamaschinenbau.jpg');
+}
+body.bg-garching::before{
+    background-image: url('../pictures/mensagarching.webp');
+}
+body.bg-boltzmann::before{
+    background-image: url('../pictures/mensabolzmann.jpg');
+}
+
+/* dark overlay above the image (but below content) */
+body.bg-maschinenbau::after,
+body.bg-garching::after,
+body.bg-boltzmann::after{
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: rgba(0,0,0,var(--overlay-darkness));
 }
 
 /* -----------------------------------------------------------
-   A) Map frame + pop-ups  (map.html)
+   Header / Title
+------------------------------------------------------------ */
+h1{
+    margin: 0 0 2rem;
+    text-align: center;
+    color: #fff; /* better contrast on photos */
+    text-shadow: 0 1px 4px rgba(0,0,0,.25);
+}
+
+.header p{
+    color: #ececec;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+
+/* -----------------------------------------------------------
+   Map frame + pop-ups  (kept for your other page)
 ------------------------------------------------------------ */
 .map-frame{
-    height:550px;
-    border:2px solid var(--tum-blue);
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 4px 12px rgba(0,0,0,.15);
-    position:relative;
+    height: 550px;
+    border: 2px solid var(--tum-blue);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    position: relative;
+    background: #fff;
 }
-#map{position:absolute;inset:0}
+#map{ position: absolute; inset: 0; }
 
-/* pop-up tweaks */
-.maplibregl-popup-content h4{
-    margin:1px 0;
-    line-height:1;
-}
+.maplibregl-popup-content{ border-radius: 10px; }
+.maplibregl-popup-content h4{ margin: 1px 0; line-height: 1; }
 .maplibregl-popup-content .qr{
-    display:block;
-    margin:4px auto 6px;
-    width:100px;
+    display: block; margin: 4px auto 6px; width: 100px;
 }
-.maplibregl-popup-anchor-top   .maplibregl-popup-tip,
-.maplibregl-popup-anchor-bottom .maplibregl-popup-tip{width:1px;height:5px}
+.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip{ width: 1px; height: 5px; }
 .maplibregl-popup-anchor-left  .maplibregl-popup-tip,
-.maplibregl-popup-anchor-right .maplibregl-popup-tip{width:5px;height:1px}
-/* smaller radius where the pointer sits */
-.maplibregl-popup-content{border-radius:10px}
-.qr{width:40px;height:auto}
+.maplibregl-popup-anchor-right .maplibregl-popup-tip{ width: 5px; height: 1px; }
 
 /* -----------------------------------------------------------
-   B) Card grid (optionally used below the map)
+   Menu grid + dishes
 ------------------------------------------------------------ */
-.cards{
-    display:flex;
-    flex-wrap:wrap;
-    gap:1.2rem;
-    margin-top:24px;
-    justify-content:center;
-}
-.card{
-    flex:1 1 260px;
-    background:#fff;
-    border:1.5px solid var(--tum-blue);
-    border-radius:14px;
-    box-shadow:0 2px 8px rgba(0,0,0,.12);
-    padding:1.2rem 1.4rem;
-}
-.card h3{
-    margin:0 0 .5rem;
-    font-size:1.15rem;
-    color:var(--tum-blue);
+
+.container{
+    /* leave room so bottom bar never overlaps the content */
+    padding-bottom: calc(var(--bottom-bar-h) + 20px);
+    min-height: 100%;
 }
 
-/* -----------------------------------------------------------
-   C) Menu cards  (mensagarching.html)
------------------------------------------------------------- */
-h1{margin:0 0 2rem;text-align:center;color:var(--tum-blue)}
-
-#menu{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:1.3rem;
+.menu-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 24px;
+    max-height: calc(100vh - var(--bottom-bar-h) - 120px); /* never under the bar */
+    overflow: auto; /* we animate inside with JS */
+    padding: 0 8px 20px;
 }
+
+.menu-grid.four-cols{
+    grid-template-columns: repeat(4, 1fr);
+}
+
 .dish{
-    width:var(--card-w);
-    background:#fff;
-    border:1.5px solid var(--tum-blue);
-    border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
-    padding:1.2rem 1.4rem;
-    display:flex;
-    flex-direction:column;
-    gap:.4rem;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 16px;
+    padding: 22px 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    border: 1px solid rgba(255,255,255,0.28);
+    backdrop-filter: blur(6px);
 }
-.dish h3{margin:.1rem 0 .3rem;font-size:1.1rem;font-weight:700}
-.labels{font-size:.85rem;color:#555;white-space:pre-line;margin-left:.25rem}
-.price {margin-top:.3rem;font-weight:600}
-.error {color:#c00;text-align:center;font-size:1.1rem}
+
+.dish h3{
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 12px;
+}
+
+
+.labels{
+    font-size: .85rem;
+    color: #718096;
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 16px;
+}
+
+/* Label icon emojis */
+.label-icon {
+    display: inline-block;
+    margin: 0 4px;
+    font-size: 1.2rem;
+}
+.label-GLUTEN::before { content: "🥖"; }
+.label-MEAT::before { content: "🥩"; }
+.label-PORK::before { content: "🐖"; }
+.label-SOY::before { content: "🌱"; }
+.label-MILK::before { content: "🥛"; }
+.label-LACTOSE::before { content: "🧀"; }
+.label-CEREAL::before { content: "🌾"; }
+.label-WHEAT::before { content: "🍞"; }
+.label-VEGETARIAN::before { content: "🥗"; }
+.label-VEGAN::before { content: "🌿"; }
+.label-ALCOHOL::before { content: "🍷"; }
+.label-ANTIOXIDANTS::before { content: "🧬"; }
+.label-BARLEY::before { content: "🌿"; }
+.label-CELERY::before { content: "🥬"; }
+.label-DYESTUFF::before { content: "🎨"; }
+.label-PHOSPHATES::before { content: "🧪"; }
+.label-PRESERVATIVES::before { content: "💊"; }
+.label-SESAME::before { content: "🌼"; }
+.label-SHELL_FRUITS::before { content: "🥜"; }
+.label-SULFITES::before { content: "⚗️"; }
+.label-SULPHURS::before { content: "🧯"; }
+.label-SWEETENERS::before { content: "🍬"; }
+.label-GARLIC::before { content: "🧄"; }
+.label-CHICKEN_EGGS::before { content: "🥚"; }
+.label-GELATIN::before { content: "🍮"; }
+
+.price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0b299f;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #d7e0fe;
+    border-radius: 8px;
+    display: block;   /* Make each price take a full line */
+    width: fit-content; /* Keeps the background tight around text */
+}
+
+.error{
+    background: rgba(255,255,255,.95);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    color: #e53e3e;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,.1);
+}
+
+/* -----------------------------------------------------------
+   Bottom bar (QR codes)
+------------------------------------------------------------ */
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--bottom-bar-h);
+    background: rgba(34, 33, 33, 0.1);
+    color: #fff;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 -4px 16px rgba(0,0,0,.25);
+}
+
+.qr-menu{
+    display: flex; gap: 60px;
+
+}
+
+.qr-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: .9rem;
+}
+
+.qr-item img{
+    width: 100px; height: auto; margin-bottom: 6px;
+}
