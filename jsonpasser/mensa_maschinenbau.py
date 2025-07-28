@@ -24,10 +24,10 @@ def fetch_html(url: str) -> str:
 
 
 
-def parse_week(html: str) -> list:
-    """Parst die ganze Woche in ein strukturiertes Python-Objekt (ohne bs4)."""
+def parse_week(html: str) -> dict:
+    """Parst nur das Tagesmenü in ein strukturiertes Python-Objekt (ohne bs4)."""
     weekday_re = re.compile(r"(\d{2}\.\d{2}\.\d{4})")
-    days = []
+    today_iso = dt.date.today().isoformat()
 
     # Find all day blocks
     day_blocks = re.findall(r'<div class="c-schedule__item">(.*?)</div>\s*</div>', html, re.S)
@@ -37,6 +37,8 @@ def parse_week(html: str) -> list:
         if not date_match:
             continue
         date_iso = dt.datetime.strptime(date_match.group(1), "%d.%m.%Y").date().isoformat()
+        if date_iso != today_iso:
+            continue
 
         dishes = []
         # Find each dish block
@@ -54,6 +56,10 @@ def parse_week(html: str) -> list:
             cat_match = re.search(r'class="stwm-artname">(.*?)</span>', dish_match, re.S)
             dish_type = re.sub('<[^<]+?>', '', cat_match.group(1)) if cat_match else "Sonstiges"
 
+            # Extract labels
+            labels_matches = re.findall(r'<span class="js-meal-filter-tag.*?data-tag="(.*?)">', dish_match)
+            labels = [label.strip().upper() for label in labels_matches]
+
             dishes.append({
                 "name": name,
                 "prices": {
@@ -61,13 +67,14 @@ def parse_week(html: str) -> list:
                     "staff":    {"base_price": price_val, "price_per_unit": 0.0, "unit": "100g"},
                     "guests":   {"base_price": price_val, "price_per_unit": 0.0, "unit": "100g"},
                 },
-                "labels": [],
+                "labels": labels,
                 "dish_type": dish_type
             })
 
-        days.append({"date": date_iso, "dishes": dishes})
+        if date_iso == today_iso:
+            return {"date": today_iso, "dishes": dishes}
 
-    return days
+    return {"date": today_iso, "dishes": []}
 
 
 def _extract_price(price_text: str) -> float:
@@ -78,10 +85,7 @@ def _extract_price(price_text: str) -> float:
 
 def main() -> None:
     html = fetch_html(URL)
-    all_days = parse_week(html)
-
-    today_iso = dt.date.today().isoformat()
-    today_menu = next((d for d in all_days if d["date"] == today_iso), {"date": today_iso, "dishes": []})
+    today_menu = parse_week(html)
 
     # JSON speichern
     OUT.parent.mkdir(parents=True, exist_ok=True)

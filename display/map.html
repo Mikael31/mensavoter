@@ -102,7 +102,7 @@ body {
 
 <div class="votes-section">
     <div class="vote-card" id="vote-garching">
-        <img src="../qrcodes/mensagarchinvote.png" alt="Mensa Garching QR" />
+        <img src="../qrcodes/mensagarchingvote.png" alt="Mensa Garching QR" />
         <p>Mensa Garching</p>
         <span class="vote-count">0 Stimmen</span>
     </div>
@@ -169,17 +169,58 @@ body {
     });
 </script>
 <script>
-(async () => {
-    try {
-        const res = await fetch('../votes/data/votes.json');
-        if (!res.ok) throw new Error('Votes file not found');
+function updateVotes() {
+    fetch(`../votes/data/votes.json?ts=${Date.now()}`)
+        .then(res => {
+            if (!res.ok) throw new Error('Votes file not found');
+            return res.json();
+        })
+        .then(votes => {
+            const entries = {
+                mensa_garching: document.querySelector('#vote-garching'),
+                mensa_bolzmann: document.querySelector('#vote-bolzmann'),
+                mensa_maschinenbau: document.querySelector('#vote-maschinenbau')
+            };
 
-        const votes = await res.json();
-        document.querySelector('#vote-garching .vote-count').textContent = votes.mensa_garching + " Stimmen";
-        document.querySelector('#vote-bolzmann .vote-count').textContent = votes.mensa_bolzmann + " Stimmen";
-        document.querySelector('#vote-maschinenbau .vote-count').textContent = votes.mensa_maschinenbau + " Stimmen";
-    } catch (err) {
-        console.error('Error loading votes:', err);
-    }
-})();
+            let maxVotes = -1;
+            let winnerKey = null;
+
+            // First, remove all crowns
+            Object.keys(entries).forEach(key => {
+                const el = entries[key];
+                el.querySelector('.vote-count').textContent = votes[key] + " Stimmen";
+                const existingCrown = el.querySelector('.crown');
+                if (existingCrown) existingCrown.remove();
+            });
+
+            // Find the winner
+            for (const key in votes) {
+                if (votes[key] > maxVotes) {
+                    maxVotes = votes[key];
+                    winnerKey = key;
+                }
+            }
+
+            // Add crown to the winner
+            if (winnerKey && entries[winnerKey] && maxVotes > 0) {
+                const crown = document.createElement('div');
+                crown.className = 'crown';
+                crown.textContent = '👑';
+                crown.style.position = 'absolute';
+                crown.style.fontSize = '24px';
+                crown.style.transform = 'rotate(-15deg)';
+                crown.style.top = '-20px';
+                crown.style.left = 'calc(50% - 12px)';
+                entries[winnerKey].style.position = 'relative';
+                entries[winnerKey].appendChild(crown);
+            }
+        })
+        .catch(err => console.error('Error loading votes:', err));
+}
+
+// Run once immediately
+updateVotes();
+
+// Update every 3 seconds
+setInterval(updateVotes, 3000);
 </script>

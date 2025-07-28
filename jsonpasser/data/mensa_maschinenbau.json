@@ -1,4 +1,445 @@
 {
-  "date": "2025-07-27",
-  "dishes": []
+  "date": "2025-07-28",
+  "dishes": [
+    {
+      "name": "Pasta mit Tomatensauce",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Pasta"
+    },
+    {
+      "name": "Pasta mit Bolognese-Sauce",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Blumenkohl-Käse-Medaillon mit Joghurtdip",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Vegetarisch/fleischlos"
+    },
+    {
+      "name": "Hähnchenbrust Caprese mit Kartoffeln und Gemüse",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Currywurst mit Curryketchup, dazu Wedges",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Vegane Gemüse-Bratwurst mit Wedges",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Vegan"
+    },
+    {
+      "name": "Falafel mit Reis und Salsa",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Vegetarisch/fleischlos"
+    },
+    {
+      "name": "Köfte (3 Stück) mit Reis und Ajvar",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Fischstäbchen mit Kartoffelsalat",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fisch"
+    },
+    {
+      "name": "Mini-Dampfnudeln mit Vanillesoße",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Süßspeise"
+    },
+    {
+      "name": "Vegetarische Pastapfanne mit Gemüse",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Pasta"
+    },
+    {
+      "name": "Schwäbische Maultaschen",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Kartoffeltaschen gefüllt mit Kräuterfrischkäse, dazu Sauerrahmdip",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Vegetarisch/fleischlos"
+    },
+    {
+      "name": "Cordon Bleu mit Kartoffel-Gurkensalat",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Käsespätzle mit Röstzwiebeln",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Vegetarisch/fleischlos"
+    },
+    {
+      "name": "Lasagne Bolognese",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Patros Pfanne",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Vegetarisch/fleischlos"
+    },
+    {
+      "name": "Kartoffel-Gemüse-Pfanne mit Hähnchenstreifen",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Tagesgericht",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Fleisch"
+    },
+    {
+      "name": "Veggie-Tagesgericht",
+      "prices": {
+        "students": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "staff": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        },
+        "guests": {
+          "base_price": 0.0,
+          "price_per_unit": 0.0,
+          "unit": "100g"
+        }
+      },
+      "labels": [],
+      "dish_type": "Vegan"
+    }
+  ]
 }
