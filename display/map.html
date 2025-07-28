@@ -9,22 +9,31 @@
 <!-- shared styles -->
 <link rel="stylesheet" href="../styles/style.css">
 
-<h2>Standorte am Campus Garching</h2>
-<p>Die wichtigsten Mensen / Cafés als 3-D-Karte:</p>
+<h2>Mensavoter Garching</h2>
+<p>Scanne einen Qr-code um die Speisekarten zu sehen und für deine Mensa abzustimmen</p>
 
 <style>
 body {
-    background: url('../pictures/TUM-Bild.png') center/cover no-repeat fixed;
+    background: url('../pictures/TUM-Bild.jpg') center/cover no-repeat fixed;
     background-color: #f0f4f9; /* fallback */
     margin: 0;
     padding: 20px;
     font-family: system-ui, sans-serif;
     color: #222;
+    overflow: hidden;
 }
 .map-frame {
   border: none;
   background: linear-gradient(135deg, #ffffff, #f0f4f9);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  height: calc(100vh - 300px);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
 }
 
 .maplibregl-popup-content {
@@ -44,34 +53,97 @@ body {
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
+.maplibregl-popup-content .qr {
+    max-width: 100px;
+    max-height: 100px;
+    display: block;
+    margin: 8px auto;
+}
+
+.votes-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    height: 220px;
+}
+
+.vote-card {
+    text-align: center;
+    width: 30%;
+}
+
+.vote-card img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 10px;
+}
+
+.vote-card p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--tum-blue);
+    margin: 5px 0;
+}
+
+.vote-count {
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+}
 </style>
 
 <div class="map-frame"><div id="map"></div></div>
 
+<div class="votes-section">
+    <div class="vote-card" id="vote-garching">
+        <img src="../qrcodes/mensagarchinvote.png" alt="Mensa Garching QR" />
+        <p>Mensa Garching</p>
+        <span class="vote-count">0 Stimmen</span>
+    </div>
+    <div class="vote-card" id="vote-bolzmann">
+        <img src="../qrcodes/mensabolzmannvote.png" alt="StuCafé Boltzmann QR" />
+        <p>StuCafé Boltzmann</p>
+        <span class="vote-count">0 Stimmen</span>
+    </div>
+    <div class="vote-card" id="vote-maschinenbau">
+        <img src="../qrcodes/mensamaschinenbauvote.png" alt="Mensa Maschinenbau QR" />
+        <p>Mensa Maschinenbau</p>
+        <span class="vote-count">0 Stimmen</span>
+    </div>
+</div>
+
 <script>
     /* ------------ unveränderter JS-Block -------------------------------*/
     const KEY='8na9eBlqJgIviIZxv3kB';
-    const STYLE_JSON={/* dein Building-Layer */};
-    const CENTER=[11.669879,48.265427];
-    const ZOOM=15.6, PITCH=58.8, BEARING=-61;
+    const STYLE_URL = `https://api.maptiler.com/maps/streets/style.json?key=${KEY}`;
+    const CENTER=[11.668879,48.265727]; // adjusted center
+    const ZOOM=15.8, PITCH=58.8, BEARING=-61;
+
+    // Ensure map container sizing
 
     const POPUPS = [
-        [11.667724,48.265774,'<h4>StuCafé Boltzmannstraße</h4>'+
-        '<img class="qr" src="../qrcodes/maschinenbau.png">','bottom',[0,0]],
+        [11.667724,48.265774,'<h4>StuCafé Maschinenbau</h4>'+
+        '<img class="qr" src="../qrcodes/maschinenbau.png" style="width:100px;height:100px;">','bottom',[0,0]],
 
         [11.6670,48.2627,'<h4>Aktueller Standort</h4>','bottom',[0,0]],
 
         [11.67174,48.2681,'<h4>StuCafé Garching</h4>'+
-        '<img class="qr" src="../qrcodes/mensabolzmann.png">','right',[0,0]],
+        '<img class="qr" src="../qrcodes/mensabolzmann.png" style="width:100px;height:100px;">','right',[0,0]],
 
         [11.67232,48.2684,'<h4>Mensa Garching</h4>'+
-        '<img class="qr" src="../qrcodes/mensagarching.png">','left',[0,0]]
+        '<img class="qr" src="../qrcodes/mensagarching.png" style="width:100px;height:100px;">','left',[0,0]]
     ];
 
     maptilersdk.config.apiKey=KEY;
     const map=new maptilersdk.Map({
         container:'map',
-        style:STYLE_JSON,
+        style:STYLE_URL,
         center:CENTER,zoom:ZOOM,pitch:PITCH,bearing:BEARING,antialias:true
     });
 
@@ -95,4 +167,19 @@ body {
             });
         });
     });
+</script>
+<script>
+(async () => {
+    try {
+        const res = await fetch('../votes/data/votes.json');
+        if (!res.ok) throw new Error('Votes file not found');
+
+        const votes = await res.json();
+        document.querySelector('#vote-garching .vote-count').textContent = votes.mensa_garching + " Stimmen";
+        document.querySelector('#vote-bolzmann .vote-count').textContent = votes.mensa_bolzmann + " Stimmen";
+        document.querySelector('#vote-maschinenbau .vote-count').textContent = votes.mensa_maschinenbau + " Stimmen";
+    } catch (err) {
+        console.error('Error loading votes:', err);
+    }
+})();
 </script>

@@ -7,7 +7,6 @@ import pathlib
 import re
 import requests
 
-from bs4 import BeautifulSoup
 
 
 # ---------------------------------------------------------------------------
@@ -23,66 +22,37 @@ def fetch_html(url: str) -> str:
     resp.encoding = "utf-8"
     return resp.text
 
-def _extract_labels(li):
-    """Extrahiert die Allergen-Kürzel (z. B. R, S, Kn) als Liste."""
-    labels = []
-
-    # Suche Text innerhalb von Klammern z. B. (R,S,Kn)
-    text = li.get_text(" ", strip=True)
-    match = re.findall(r"\(([^)]+)\)", text)
-    for m in match:
-        # Split by comma and clean
-        for code in m.split(","):
-            code = code.strip()
-            if code and len(code) <= 5:  # Filter, damit wir nur Kürzel nehmen
-                labels.append(code)
-
-    # Alternative: Prüfe [Allergene]-Tag (falls vorhanden)
-    allergen_tag = li.select_one("span, .c-menu-allergens")
-    if allergen_tag:
-        allergen_text = allergen_tag.get_text(strip=True)
-        codes = [x.strip() for x in allergen_text.split(",")]
-        labels.extend(codes)
-
-    return list(set(labels))  # Doppelte entfernen
 
 
 def parse_week(html: str) -> list:
-    """Parst die ganze Woche in ein strukturiertes Python-Objekt."""
-    soup = BeautifulSoup(html, "lxml")
-
+    """Parst die ganze Woche in ein strukturiertes Python-Objekt (ohne bs4)."""
     weekday_re = re.compile(r"(\d{2}\.\d{2}\.\d{4})")
     days = []
 
-    for daybox in soup.select("div.c-schedule__item"):
-        # Datum
-        head = daybox.select_one("div.c-schedule__header span strong")
-        if not head:
+    # Find all day blocks
+    day_blocks = re.findall(r'<div class="c-schedule__item">(.*?)</div>\s*</div>', html, re.S)
+
+    for block in day_blocks:
+        date_match = weekday_re.search(block)
+        if not date_match:
             continue
-        head_txt = head.get_text(strip=True)
-        m = weekday_re.search(head_txt)
-        if not m:
-            continue
-        date_iso = dt.datetime.strptime(m.group(1), "%d.%m.%Y").date().isoformat()
+        date_iso = dt.datetime.strptime(date_match.group(1), "%d.%m.%Y").date().isoformat()
 
         dishes = []
-        for li in daybox.select("ul.c-menu-dish-list li"):
-            name_tag = li.select_one("p.c-menu-dish__title")
-            if not name_tag:
-                continue
-            name = name_tag.get_text(" ", strip=True)
+        # Find each dish block
+        for dish_match in re.findall(r'<li.*?>(.*?)</li>', block, re.S):
+            # Extract dish name
+            name_match = re.search(r'<p class="c-menu-dish__title">(.*?)</p>', dish_match, re.S)
+            name = re.sub('<[^<]+?>', '', name_match.group(1)) if name_match else "Unbekannt"
 
-            # Preis extrahieren (falls vorhanden)
-            price_tag = li.select_one(".js-meal-price")
-            price_text = price_tag.get_text(strip=True) if price_tag else ""
+            # Extract price
+            price_match = re.search(r'class="js-meal-price">(.*?)</span>', dish_match, re.S)
+            price_text = price_match.group(1).strip() if price_match else ""
             price_val = _extract_price(price_text)
 
-            # Labels (Allergene/Attribute)
-            labels = _extract_labels(li)
-
-            # Kategorie (z.B. Pasta, Fleisch)
-            category = li.select_one(".stwm-artname")
-            dish_type = category.get_text(strip=True) if category else "Sonstiges"
+            # Extract category
+            cat_match = re.search(r'class="stwm-artname">(.*?)</span>', dish_match, re.S)
+            dish_type = re.sub('<[^<]+?>', '', cat_match.group(1)) if cat_match else "Sonstiges"
 
             dishes.append({
                 "name": name,
@@ -91,7 +61,7 @@ def parse_week(html: str) -> list:
                     "staff":    {"base_price": price_val, "price_per_unit": 0.0, "unit": "100g"},
                     "guests":   {"base_price": price_val, "price_per_unit": 0.0, "unit": "100g"},
                 },
-                "labels": labels,
+                "labels": [],
                 "dish_type": dish_type
             })
 
